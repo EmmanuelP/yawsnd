@@ -1,0 +1,2 @@
+# Sndway sw-524
+SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", MODE:="0666", TAG+="uaccess", TAG+="udev-acl"
