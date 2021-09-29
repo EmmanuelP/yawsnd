@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <glib-object.h>
 #include <gusb.h>
+#include <mosquitto.h>
 
 #define YAWSND_COMMAND_CONFIG		0x56
 #define YAWSND_COMMAND_READ_CURRENT	0xb3
@@ -22,8 +23,13 @@ main (int argc, char **argv)
 	GError *error = NULL;
 	GUsbContext *ctx = NULL;
 	GUsbDevice *device = NULL;
+	struct mosquitto *mqtt_client = NULL;
+
+	mosquitto_lib_init ();
 
 	ctx = g_usb_context_new (&error);
+
+	mqtt_client = mosquitto_new (NULL, TRUE, NULL);
 
 	if (error == NULL)
 		device = g_usb_context_find_by_vid_pid (ctx,
@@ -66,6 +72,10 @@ main (int argc, char **argv)
 
 	g_clear_object (&device);
 	g_clear_object (&ctx);
+
+	mosquitto_destroy (mqtt_client);
+
+	mosquitto_lib_cleanup ();
 
 	return EXIT_SUCCESS;
 }
