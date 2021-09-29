@@ -28,8 +28,8 @@ if cc.get_id()=='gcc' or cc.get_id()=='clang'
 endif
 
 glib_dep = dependency('glib-2.0', version: '>=2.44', required:true)
-gusb_dep = dependency('gusb', version:'>=0.3.7', required:true)
-mosquitto_dep = dependency('libmosquitto', version:'>=2.0.0', required:true)
+gusb_dep = dependency('gusb', version:'>=0.3.0', required:true)
+mosquitto_dep = dependency('libmosquitto', version:'>=1.5.0', required:true)
 
 yawsnd_dependencies = [
   glib_dep,
