@@ -1,5 +1,6 @@
 yawsnd_sources = [
-  'main.c'
+  'main.c',
+  'yawsw524.c'
 ]
 
 executable('yawsnd', yawsnd_sources, dependencies:yawsnd_dependencies, install:true)
