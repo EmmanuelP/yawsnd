@@ -22,10 +22,11 @@ main (int argc, char **argv)
 
 		for (i = 0; i < 100; i++) {
 			double value;
+			YawUnit unit;
 
-			value = yaw_sw524_read_value (sonometer, &error);
+			value = yaw_sw524_read_value (sonometer, &unit, &error);
 
-			printf ("Success %g\n", value);
+			printf ("Success %g %s\n", value, unit == YAW_UNIT_DB_C ? "dbC" : "dbA");
 		}
 	}
 

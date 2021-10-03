@@ -30,7 +30,7 @@ G_DEFINE_TYPE_WITH_CODE (YawSw524, yaw_sw524, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, yaw_sw524_initable_iface_init))
 
 double
-yaw_sw524_read_value (YawSw524 *self, GError **error)
+yaw_sw524_read_value (YawSw524 *self, YawUnit *unit, GError **error)
 {
 	GError *local_error = NULL;
 	guint8 data[64];
@@ -53,6 +53,9 @@ yaw_sw524_read_value (YawSw524 *self, GError **error)
 		g_propagate_error (error, local_error);
 		return 0.0;
 	}
+
+	if (unit != NULL)
+		*unit = (data[2] & YAWSND_CONFIG_DB_C) != 0 ? YAW_UNIT_DB_C : YAW_UNIT_DB_A;
 
 	return GUINT16_FROM_BE (*((guint16 *) data)) / 10.0;
 }
