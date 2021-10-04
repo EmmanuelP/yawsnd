@@ -23,7 +23,12 @@ _read_value (gpointer user_data)
                 value = yaw_sw524_read_value (app->sound_meter, &unit, &error);
 
         if (error == NULL) {
+                char *payload;
+
+                payload = g_strdup_printf ("%.1f", value);
+                mosquitto_publish (app->mqtt_client, NULL, "soundmeter", strlen (payload) + 1, payload, 0, true);
                 printf ("%.1f %s\n", value, unit == YAW_UNIT_DB_C ? "dbC" : "dbA");
+                g_free (payload);
                 return TRUE;
         }
 
@@ -44,6 +49,8 @@ main (int argc, char **argv)
 
 	app.sound_meter = yaw_sw524_new (&error);
         app.mqtt_client = mosquitto_new (NULL, TRUE, NULL);
+
+        mosquitto_connect (app.mqtt_client, "whydah.local", 1883, 5);
 
 	if (error != NULL) {
 		printf ("Failed: %s\n", error->message);
